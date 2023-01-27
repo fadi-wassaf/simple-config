@@ -26,5 +26,5 @@ Below is some example code for reading in values from the above config file. You
 Config cfg("./path/to/config");
 std::string name = cfg.getValue<std::string>("name", "");
 int age = cfg.getValue<int>("age", 0);
-bool isMarried = cfg.getValue<bool>("married", false)
+bool isMarried = cfg.getValue<bool>("married", false);
 ```
