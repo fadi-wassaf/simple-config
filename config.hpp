@@ -12,14 +12,16 @@ class Config {
     Config();
     Config(std::string const& config_path);
 
+    bool foundConfig() { return found_config; }
     void readConfig(std::string const& config_path);
     template<typename T> T getValue(std::string const& key, T def);
 
     private:
+    bool found_config;
     std::unordered_map<std::string, std::string> config_map;
 };
 
-Config::Config() {}
+Config::Config() { found_config = false; }
 Config::Config(std::string const& config_path){ readConfig(config_path); }
 
 /**
@@ -32,10 +34,11 @@ void Config::readConfig(std::string const& config_path){
     // Try to open the config file specified by the user.
     std::ifstream config_file(config_path);
     if(config_file.fail()){
-        std::cerr << "Cannot open " << config_path << std::endl;
-        exit(1);
+        found_config = false;
+        return;
     }
 
+    found_config = true;
     std::string line;
     while(getline(config_file, line)){
         // Locate the '=' character in the current line.
@@ -50,7 +53,6 @@ void Config::readConfig(std::string const& config_path){
             continue;
         config_map[key] = value;
     }
-    config_file.close();
 }
 
 /**
